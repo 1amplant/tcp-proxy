@@ -11,7 +11,7 @@ def hexdump(src, length=16, show=True):
         src = src.decode()
 
     results = list()
-    
+
     for i in range(0, len(src), length):
         word = str(src[i:i+length])
         printable = word.translate(HEX_FILTER)
@@ -26,3 +26,19 @@ def hexdump(src, length=16, show=True):
     else:
         return results
 
+def receive_from(connection):
+    buffer = b""
+    connection.settimeout(5)
+
+    try:
+        while True:
+            data = connection.recv(4096)
+            if not data:
+                break
+
+            buffer += data
+
+    except Exception as e:
+        pass
+    
+    return buffer
